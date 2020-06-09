@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fish</title>
+    <script>
+        if (CSS.registerProperty) {
+            CSS.registerProperty({
+                name: '--x1',
+                syntax: '<length-percentage>',
+                initialValue: '0%',
+                inherits: true
+            });
+            CSS.registerProperty({
+                name: '--x2',
+                syntax: '<length-percentage>',
+                initialValue: '0%',
+                inherits: true,
+            });
+            CSS.registerProperty({
+                name: '--y1',
+                syntax: '<length-percentage>',
+                initialValue: '0%',
+                inherits: true,
+            });
+        }
+    </script>
+    <style>
+        body {
+            margin: 0;
+        }
+        :root {
+            --x1: 18%;
+            --x2: 45%;
+            --y1: 13%;
+        }
+        .header {
+            background: rgba(255,255,255,.5);
+            backdrop-filter: blur(5px);
+            z-index: 1;
+            position: relative;
+            overflow: hidden;
+        }
+        .header__title {
+            font-family: Verdana, Arial, sans-serif;
+            font-weight: 400;
+            font-size: 5rem;
+            margin: 4rem 2rem;
+        }
+        .header__subtitle {
+            display: block;
+            font-size: 2rem;
+        }
+        .content {
+            color: #fff;
+            position: relative;
+            z-index: 1;
+            font-family: Verdana, Arial, sans-serif;
+            margin: 2rem;
+        }
+        .ocean {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-image:   linear-gradient(80deg, rgba(0,114,197,1) var(--x1), rgba(0,179,197,1) var(--x2)),
+                                linear-gradient(178deg,  rgba(234,247,22, .4) 0%, rgba(234,247,22, 0) var(--y1));
+            animation-name: wave1, wave2, wave3;
+            animation-duration: 6.3s, 6.6s, 8s;
+            animation-direction: alternate;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+        }
+        .ocean:before {
+            content: '';
+            position: absolute;
+            background-image: linear-gradient(178deg, rgba(208, 247, 167, 0.5) 0%, rgba(234, 247, 22, 0) var(--y1)),
+            linear-gradient(0deg, rgb(125, 88, 8) 0%, rgb(37, 27, 2) 8%, rgba(0, 0, 0, 0) 10%),
+            linear-gradient(0deg, rgba(0, 0, 0, 1) 8%, rgba(0, 0, 0, 0.6) 10%, rgba(0, 0, 0, 0) 50%);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+        .ocean__fish {
+            font-size: 5rem;
+            position: absolute;
+            user-select: none;
+            z-index: 5
+        }
+        .ocean__fish_silver-fish-school {
+            font-size: 3rem;
+            line-height: 2.8rem;
+            letter-spacing: 0.75rem;
+            white-space: pre;
+            text-align: right;
+            animation-name: silverFishWiggle, silverFishX, silverFishY;
+            animation-duration: .25s, 6s, 1s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out, linear, ease-in-out;
+            animation-direction: alternate, normal, alternate;
+        }
+        .ocean__fish_silver-fish-school:after {
+            content: "🐟\a🐟🐟\a🐟🐟🐟\a🐟🐟\a🐟";
+        }
+        .ocean__fish_angel-fish {
+            animation-name: angelFishWiggle, angelFishX, angelFishY;
+            animation-duration: 1.5s, 6s, 1.5s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear, ease-in-out, ease-in-out;
+            animation-direction: alternate, normal, alternate;
+            animation-delay: 2s;
+            left: -20rem;
+            top: 20rem;
+        }
+        .ocean__fish_puffer-fish {
+            transform: rotate(20deg);
+            animation-name: pufferFishRotate, pufferFishX, pufferFishY;
+            animation-duration: 2s, 12s, 2s;
+            animation-direction: alternate, normal, alternate;
+            animation-timing-function: ease-in-out, linear, ease-in-out;
+            animation-iteration-count: infinite, infinite, infinite;
+            font-size: 10em;
+        }
+
+        @keyframes wave1 {
+            to {
+                --x1: 26%;
+            }
+        }
+        @keyframes wave2 {
+            to {
+                --x2: 58%;
+            }
+        }
+        @keyframes wave3 {
+            to {
+                --y1: 20%;
+            }
+        }
+
+        @keyFrames silverFishWiggle {
+            0% {
+                transform: scaleX(-1) rotate(2deg);
+            }
+            100% {
+                transform: scaleX(-1) rotate(-2deg);
+            }
+        }
+
+        @keyframes silverFishX {
+            0% {
+                left: -230px; /* Safari needs px here */
+            }
+            15% {
+                left: -230px;
+            }
+            100% {
+                left: 100%;
+            }
+            85% {
+                left: 100%;
+            }
+        }
+
+        @keyFrames silverFishY {
+            0% {
+                top: 15%;
+            }
+            100% {
+                top: 22%;
+            }
+        }
+
+        @keyframes angelFishX {
+            0% {
+                left: -150px;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        @keyframes angelFishY {
+            0% {
+                top: 65%;
+            }
+            100% {
+                top: 75%;
+            }
+        }
+
+        @keyframes angelFishWiggle {
+            0% {
+                transform: scaleX(-1) rotate(5deg);
+            }
+            10% {
+                transform: scaleX(-1) rotate(-4deg);
+            }
+            20% {
+                transform: scaleX(-1) rotate(4deg);
+            }
+            30% {
+                transform: scaleX(-1) rotate(-6deg);
+            }
+            40% {
+                transform: scaleX(-1) rotate(6deg);
+            }
+            50% {
+                transform: scaleX(-1) rotate(-6deg);
+            }
+            60% {
+                transform: scaleX(-1) rotate(6deg);
+            }
+            70% {
+                transform: scaleX(-1) rotate(-7deg);
+            }
+            80% {
+                transform: scaleX(-1) rotate(6deg);
+            }
+            90% {
+                transform: scaleX(-1) rotate(-15deg);
+            }
+            100% {
+                transform: scaleX(-1) rotate(-15deg);
+            }
+        }
+        @keyframes pufferFishRotate {
+            to {
+                transform: rotate(-20deg);
+            }
+        }
+        @keyframes pufferFishX {
+            0% {
+                left: 100%;
+            }
+            15% {
+                left: 100%;
+            }
+            85% {
+                left: -200px;
+            }
+            100% {
+                left: -200px;
+            }
+        }
+        @keyframes pufferFishY {
+            0% {
+                top: 30%;
+            }
+            100% {
+                top: 35%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1 class="header__title">Eric Demicco <strong class="header__subtitle">Web Development, <em>etc.</em></strong></h1>
+    </header>
+<!--    <main class="content">-->
+<!--        <p>I'm some guy!</p>-->
+<!--    </main>-->
+    <div class="ocean">
+        <span class="ocean__fish ocean__fish_silver-fish-school"></span>
+        <span class="ocean__fish ocean__fish_angel-fish">🐠</span>
+        <span class="ocean__fish ocean__fish_puffer-fish">🐡</span>
+    </div>
+</body>
+</html>
