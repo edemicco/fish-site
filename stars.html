@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+            background: #333;
+        }
+
+        .container {
+            box-sizing: border-box;
+            height: 90%;
+            max-height: 90vw;
+            width: 90%;
+            max-width: 90vh;
+            overflow: hidden;
+            border: 1px solid blue;
+            background: #000;
+            position: relative;
+            background: linear-gradient(#101081, #000000);
+        }
+
+        .origin {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 0;
+            height: 0;
+            animation: spin 5s ease-out forwards;
+            font-size: .125rem;
+        }
+
+        .origin .point {
+            position: absolute;
+            width: .5rem;
+            height: .5rem;
+            background: #fff;
+            border-radius: .25rem;
+            margin: -.25rem 0 0 -.25rem;
+            box-shadow: #bbf 0 0 .25rem .25rem;
+            animation: fadeout 5s ease-out forwards;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(70deg);
+                font-size: 15rem;
+                opacity: 0;
+                margin-top: -3rem;
+            }
+        }
+
+        @keyframes fadeout {
+            0% {
+                box-shadow: #bbf 0 0 .25rem .25rem;
+            }
+
+            100% {
+                background: #f00;
+                box-shadow: #533 0 0 .25rem .5rem;
+            }
+        }
+    </style>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var el = document.querySelector('.origin');
+
+        for (let i = 0; i < 15; i++) {
+            let pointEl = document.createElement('span');
+            pointEl.classList.add('point');
+            pointEl.style.left = Math.sin(i) + 'em';
+            pointEl.style.top = Math.cos(i) + 'em';
+            el.appendChild(pointEl);
+        }
+
+        el.addEventListener('animationend', function () {
+            el.classList.remove('origin');
+            el.style.left = Math.floor((Math.random()) * 100) + '%';
+            el.style.top = Math.floor((Math.random()) * 100) + '%';
+            setTimeout(function () {
+                el.classList.add('origin');
+            },10);
+        });
+      })
+    </script>
+    <title>Stars</title>
+</head>
+<body>
+  <div class="container">
+    <div class="origin"></div>
+  </div>
+</body>
+</html>
