@@ -43,9 +43,24 @@
 
         .flyaway {
             position: absolute;
-            left: 50%;
-            top: 50%;
+            left: 100%;
+            top: 25%;
             font-size: 8rem;
+            animation: 5s flyaway normal infinite linear;
+        }
+
+        @keyframes flyaway {
+            0% {
+                left: 100%;
+            }
+
+            30% {
+                left: -55%;
+            }
+
+            100% {
+                left: -55%;
+            }
         }
 
         @keyframes spotlight_x {
