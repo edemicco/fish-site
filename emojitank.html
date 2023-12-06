@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            background: #333;
+            overflow: hidden;
+            height: 100vh;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+    </style>
+    <script>
+        class CharacterRep extends HTMLElement {
+            static observedAttributes = ["char", "motion", "origin-x", "origin-y", "direction"];
+            constructor() {
+                super();
+                //const shadowRoot = this.attachShadow({mode: "open"});
+                this.originX = this.originX || 0;
+                this.originY = this.originY || 0;
+                this.direction = 1; // 1 is to the right, -1 is to the left
+                //this.shadowRoot.append(this.span);
+            }
+
+            connectedCallback() {
+                //this.shadowRoot.addEventListener('click',event=>this.span.style.left = '100%');
+                this.style.willChange = 'left, top, transform';
+                this.style.fontSize = '15rem';
+                this.style.left = this.originX + 'px';
+                this.style.top = this.originY + 'px';
+                this.style.translate = '-50% -50%';
+                this.style.position = 'absolute';
+                this.style.transformOrigin = 'center';
+            }
+
+            attributeChangedCallback(name, oldVal, newVal) {
+                if (name === 'char') {
+                    if (this.firstChild)
+                        this.firstChild.remove();
+
+                    this.append(this.getAttribute('char'));
+                }
+
+                if (name === 'motion') {
+                    this.setupMotion(newVal);
+                }
+
+                if (name === 'origin-x') {
+                    this.originX = parseInt(newVal);
+                    this.style.left = newVal + 'px';
+                }
+
+                if (name === 'origin-y') {
+                    this.originY = parseInt(newVal);
+                    this.style.top = newVal + 'px';
+                }
+
+                if (name === 'direction') {
+                    this.direction = parseInt(newVal);
+                }
+            }
+
+            setupMotion(type) {
+                let callback;
+                if (type === 'wave') {
+                    this.style.left = this.originX;
+                    this.style.top = this.originY;
+                    this.animate = time => {
+                        if (!this.startTime) {
+                            this.startTime = time;
+                        }
+                        let myTime = time - this.startTime;
+                        // get the difference so we know how much to move
+                        let delta = this.myLastFrameTime ? myTime - this.myLastFrameTime : 0;
+                        // save so we can use it next time
+                        this.myLastFrameTime = myTime;
+                        if (this.offsetLeft <= 0)
+                            this.direction = 1;
+                        if (this.offsetLeft >= window.innerWidth)
+                            this.direction = -1; // go the other way at the edge
+                        this.style.left = this.offsetLeft + (delta *.8 * this.direction) + 'px';
+                        this.style.top = Math.sin(myTime / 1000) * 200 + this.originY + 'px';
+                        this.style.transform = 'scaleX(' + this.direction * -1 +') rotate(' + Math.sin(myTime / 80) * 3 + 'deg) skewX(' + Math.sin(myTime / 120) + 'deg)';
+                    }
+                }
+            }
+        }
+
+        customElements.define("character-rep", CharacterRep);
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.addEventListener('click', e=>{
+                let fish = ['🐟','🐠','🐡'];
+                let newEl = document.createElement('character-rep');
+                let allChars = [];
+                newEl.setAttribute('char', fish[Math.floor(Math.random() * fish.length)]);
+                newEl.setAttribute('direction', [-1, 1][Math.floor(Math.random() * 2)]);
+                newEl.setAttribute('origin-x', e.clientX.toString());
+                newEl.setAttribute('origin-y', e.clientY.toString());
+                newEl.setAttribute('motion', 'wave');
+                allChars.push(newEl);
+                document.body.appendChild(newEl);
+
+                let mainLoop = time => {
+                    for (let i = 0; i < allChars.length; i++) {
+                        allChars[i].animate.call(allChars[i], time);
+                        requestAnimationFrame(mainLoop);
+                    }
+                }
+                requestAnimationFrame(mainLoop);
+            });
+        });
+    </script>
+    <title>Test</title>
+</head>
+<body>
+</body>
+</html>
