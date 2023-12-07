@@ -29,7 +29,9 @@
                 this.style.fontSize = '15rem';
                 this.style.left = this.originX + 'px';
                 this.style.top = this.originY + 'px';
+                this.style.transition = 'scale .25s ease';
                 this.style.translate = '-50% -50%';
+                this.style.scale = (this.direction * -1) + ' 1';
                 this.style.position = 'absolute';
                 this.style.transformOrigin = 'center';
             }
@@ -62,7 +64,6 @@
             }
 
             setupMotion(type) {
-                let callback;
                 if (type === 'wave') {
                     this.style.left = this.originX;
                     this.style.top = this.originY;
@@ -81,7 +82,8 @@
                             this.direction = -1; // go the other way at the edge
                         this.style.left = this.offsetLeft + (delta *.8 * this.direction) + 'px';
                         this.style.top = Math.sin(myTime / 1000) * 200 + this.originY + 'px';
-                        this.style.transform = 'scaleX(' + this.direction * -1 +') rotate(' + Math.sin(myTime / 80) * 3 + 'deg) skewX(' + Math.sin(myTime / 120) + 'deg)';
+                        this.style.scale = (this.direction * -1) + ' 1';
+                        this.style.transform = 'rotate(' + Math.sin(myTime / 80) * 3 + 'deg) skewX(' + Math.sin(myTime / 120) + 'deg)';
                     }
                 }
             }
