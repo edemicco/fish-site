@@ -16,15 +16,12 @@
             static observedAttributes = ["char", "motion", "origin-x", "origin-y", "direction"];
             constructor() {
                 super();
-                //const shadowRoot = this.attachShadow({mode: "open"});
                 this.originX = this.originX || 0;
                 this.originY = this.originY || 0;
                 this.direction = 1; // 1 is to the right, -1 is to the left
-                //this.shadowRoot.append(this.span);
             }
 
             connectedCallback() {
-                //this.shadowRoot.addEventListener('click',event=>this.span.style.left = '100%');
                 this.style.willChange = 'left, top, transform';
                 this.style.fontSize = '15rem';
                 this.style.left = this.originX + 'px';
@@ -68,11 +65,10 @@
                     this.style.left = this.originX;
                     this.style.top = this.originY;
                     this.animate = time => {
-                        if (!this.startTime) {
+                        if (!this.startTime)
                             this.startTime = time;
-                        }
                         let myTime = time - this.startTime;
-                        // get the difference so we know how much to move
+                        // get the difference since last frame so we know how much to move
                         let delta = this.myLastFrameTime ? myTime - this.myLastFrameTime : 0;
                         // save so we can use it next time
                         this.myLastFrameTime = myTime;
